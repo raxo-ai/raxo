@@ -42,5 +42,4 @@ class ChromaStore(RaxoBase):
         )
 
     def run_query(self, sql):
-        # TODO add functionality to fetch embedding
         pass
