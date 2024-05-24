@@ -1,49 +1,44 @@
-"""
-   AzureOpenAIChat class will be used to create client for azure openai connect and then
-   further used to ask any query
-"""
-
 import os
-from openai import OpenAI
-from src.raxo.utils.base import RaxoBase
+from .llms import Llm
+from openai import AzureOpenAI
 
 
-class AzureOpenAIChat(RaxoBase):
-    """
-        class to create azure openai client
-    """
-    def __init__(self, client=None, config=None):
-        RaxoBase.__init__(self, config)
-
-        self.temperature = self.config.get("temperature", 0.75)
-        self.max_tokens = self.config.get("max_tokens", 500)
-
-        if client is not None:
-            self.client = client
-
-        if self.config.get("api_key") is None and os.environ.get("OPENAI_API_KEY") is None:
+class AzureOpenAIChat(Llm):
+    def __init__(self, api_key: str | None = None, api_version: str | None = None,
+                 azure_endpoint: str | None = None,
+                 deployment_name: str | None = None,
+                 temperature: float = 0.5, max_tokens: int = 700):
+        self.api_key = api_key or os.environ.get("OPENAI_API_KEY", None)
+        self.temperature = temperature
+        self.max_tokens = max_tokens
+        self.api_version = api_version or os.environ.get("API_VERSION", None)
+        self.azure_endpoint = azure_endpoint or os.environ.get("AZURE_ENDPOINT", None)
+        self.deployment_name = deployment_name
+        if self.api_key is None:
             raise KeyError("Did not find azure api_key, please add an environment variable"
                            " `AZURE_API_KEY` which contains it, or pass `azure_key` as"
                            " a named parameter")
 
-        if self.config.get("api_version") is None:
+        if self.api_version is None:
             raise KeyError("Did not find azure api_version, please add an environment variable"
                            " `API_VERSION` which contains it, or pass `api_version` as"
                            " a named parameter")
 
-        if self.config.get("azure_endpoint") is None:
+        if self.azure_endpoint is None:
             raise KeyError("Did not find azure azure_endpoint, please add an environment variable"
                            " `AZURE_ENDPOINT` which contains it, or pass `azure_endpoint` as"
                            " a named parameter")
 
-        self.client = OpenAI(api_key=self.config.get("azure_key", os.environ.get("AZURE_API_KEY")))
+        self.client = AzureOpenAI(api_key=self.api_key,
+                                  azure_endpoint=self.azure_endpoint,
+                                  api_version=self.api_version
+                                  )
 
     def invoke_prompt(self, prompt, **kwargs):
-        """
-        this function will use to invoke prompt, format a proper prompt and
-         it will call openai chat completion api and get the inference"""
-        print("parameters: ", self.config)
         data = self.client.chat.completions.create(messages=prompt,
-                                                   model=kwargs.get("model", "gpt-3.5-turbo"))
+                                                   model=kwargs.get("model", "gpt-3.5-turbo"),
+                                                   temperature=self.temperature,
+                                                   max_tokens=self.max_tokens,
+                                                   **kwargs)
 
         return data.choices[0].message.content
