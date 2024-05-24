@@ -1,9 +1,12 @@
-from abc import ABC, abstractmethod
+""" base file """
+
+from abc import ABC
 from ..databases import MySQLConnector, VerticaConnector
 from ..utils.exceptions import InvalidKeysException
 
 
 class RaxoBase(ABC):
+    """ Base class """
     def __init__(self, config=None):
         if not config:
             config = {}
@@ -64,5 +67,8 @@ class RaxoBase(ABC):
             print(f"An error occurred: {e}")
 
     def sqlite_connector(self, db_config):
+        pass
+
+    def ask_query(self, query):
         pass
 

@@ -1,10 +1,15 @@
+"""
+ Chromadb embedding database
+"""
+
 import chromadb
 from chromadb.utils import embedding_functions
 from ..utils.base import RaxoBase
 
 
 class ChromaStore(RaxoBase):
-    def __int__(self, config):
+    """ ChromaStore class """
+    def __int__(self, config=None):
         RaxoBase.__init__(config)
 
         path = self.config.get("path", "./db")
@@ -40,6 +45,3 @@ class ChromaStore(RaxoBase):
             embedding_function=self.embedding_function,
             metadata=collection_meta
         )
-
-    def run_query(self, sql):
-        pass

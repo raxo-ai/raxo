@@ -1,2 +1,6 @@
+"""
+models module init
+"""
+
 from .openai_chat import OpenAIChat
 from .azure_chat import AzureOpenAIChat

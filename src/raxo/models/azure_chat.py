@@ -1,9 +1,17 @@
+"""
+   AzureOpenAIChat class will be used to create client for azure openai connect and then
+   further used to ask any query
+"""
+
 import os
 from openai import OpenAI
 from src.raxo.utils.base import RaxoBase
 
 
 class AzureOpenAIChat(RaxoBase):
+    """
+        class to create azure openai client
+    """
     def __init__(self, client=None, config=None):
         RaxoBase.__init__(self, config)
 
@@ -31,6 +39,9 @@ class AzureOpenAIChat(RaxoBase):
         self.client = OpenAI(api_key=self.config.get("azure_key", os.environ.get("AZURE_API_KEY")))
 
     def invoke_prompt(self, prompt, **kwargs):
+        """
+        this function will use to invoke prompt, format a proper prompt and
+         it will call openai chat completion api and get the inference"""
         print("parameters: ", self.config)
         data = self.client.chat.completions.create(messages=prompt,
                                                    model=kwargs.get("model", "gpt-3.5-turbo"))

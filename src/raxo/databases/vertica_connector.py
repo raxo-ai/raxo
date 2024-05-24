@@ -1,10 +1,22 @@
+""" Vertica class """
+
 import vertica_python
+from ..utils.exceptions import InvalidKeysException
 
 
 class VerticaConnector:
+    required_keys = ('host', 'port', 'user', 'password', 'database')
+
     def __init__(self, config):
         self.config = config
         self.connection = None
+        missing_keys = self.check_missing_keys()
+        if missing_keys:
+            raise InvalidKeysException(f"Missing required config keys: {', '.join(missing_keys)}")
+
+    def check_missing_keys(self):
+        missing_keys = [key for key in self.required_keys if key not in self.config]
+        return missing_keys
 
     def connect(self):
         # Establish the connection
@@ -15,7 +27,7 @@ class VerticaConnector:
             print(f"Connection error: {e}")
             raise
 
-    def close(self):
+    def disconnect(self):
         if self.connection:
             self.connection.close()
             print("Connection closed.")
@@ -33,3 +45,5 @@ class VerticaConnector:
             raise
         finally:
             cursor.close()
+
+

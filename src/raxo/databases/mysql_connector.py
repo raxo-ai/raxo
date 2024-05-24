@@ -1,23 +1,26 @@
+""" MySQL class """
 import mysql.connector
 from mysql.connector import Error
+from ..utils.exceptions import InvalidKeysException
 
 
 class MySQLConnector:
-    def __init__(self, host, database, user, password):
-        self.host = host
-        self.database = database
-        self.user = user
-        self.password = password
+    required_keys = ('host', 'database', 'user', 'password')
+
+    def __init__(self, config):
+        self.config = config
         self.connection = None
+        missing_keys = self.check_missing_keys()
+        if missing_keys:
+            raise InvalidKeysException(f"Missing keys: {', '.join(missing_keys)}")
+
+    def check_missing_keys(self):
+        missing_keys = [key for key in self.required_keys if key not in self.config]
+        return missing_keys
 
     def connect(self):
         try:
-            self.connection = mysql.connector.connect(
-                host=self.host,
-                database=self.database,
-                user=self.user,
-                password=self.password
-            )
+            self.connection = mysql.connector.connect(**self.config)
             if self.connection.is_connected():
                 print("Connected to MySQL database")
         except Error as e:
