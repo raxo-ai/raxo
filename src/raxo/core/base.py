@@ -1,6 +1,6 @@
 
 
-class Raxo(object):
+class Raxo:
     def __init__(self, llm, database, vector_db=None):
         self.llm = llm
         self.database = database
