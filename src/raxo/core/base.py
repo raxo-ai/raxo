@@ -1,9 +1,6 @@
-from abc import ABC, abstractmethod
-from ..databases import MySQLConnector, VerticaConnector
-from ..utils.exceptions import InvalidKeysException
 
 
-class Raxo(ABC):
+class Raxo:
     def __init__(self, llm, database, vector_db=None):
         self.llm = llm
         self.database = database
@@ -12,5 +9,3 @@ class Raxo(ABC):
     def ask(self, query):
         if query:
             self.llm.invoke(query)
-
-
