@@ -66,6 +66,7 @@ class VerticaConnector:
         self.password = password
         self.database = database
         self.connection = None
+        self.dialect = "Vertica"
         missing_keys = self.check_missing_keys()
         if missing_keys:
             raise InvalidKeysException(f"Missing required keys: {', '.join(missing_keys)}")
