@@ -29,7 +29,6 @@ Usage Example:
 import chromadb
 import uuid
 from chromadb.utils import embedding_functions
-from chromadb.utils import embedding_functions
 from .vector import Vector
 
 

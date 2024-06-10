@@ -1,11 +1,11 @@
 from ..utils.exceptions import NoTextProvided
 from src.raxo.utils.prompts import NLQ_SYSTEM_PROMPT, RELATED_QUESTION_SYSTEM_PROMPT
-from ..models.llms import Llm 
+from ..models.llms import Llm
 from ..vector.chroma_db import ChromaStore
 
 
 class Raxo:
-    def __init__(self, llm: Llm, database, vector_db=None, em_function=None, execute_query: bool=False):
+    def __init__(self, llm: Llm, database, vector_db=None, em_function=None, execute_query: bool = False):
         self.llm = llm
         self.database = database
         self.vector_db = vector_db or ChromaStore()
@@ -22,14 +22,14 @@ class Raxo:
     def generate_sql(self, user_query):
         embedding = self.em_function.create_embedding(user_query)
         ddl = self.vector_db.get_ddl(embedding)
-        
+
         # Extracting documents only
         ddl = ddl['documents'][0]
 
         prompt = self._get_prompt(user_query, ddl, self.database.dialect)
-        
+
         response = self.llm.invoke_prompt(prompt)
-        
+
         return response
 
     def generate_related_question(self, query, follow_up_count):
