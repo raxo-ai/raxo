@@ -20,8 +20,8 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/Raxo-AI/raxo"
-"Bug Tracker" = "https://github.com/Raxo-AI/raxo/issues"
+"Homepage" = "https://github.com/raxo-ai/raxo"
+"Bug Tracker" = "https://github.com/raxo-ai/raxo/issues"
 
 [project.optional-dependencies]
 mysql = ["mysql-connector-python >= 8.4.0"]
