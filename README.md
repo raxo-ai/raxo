@@ -1,7 +1,9 @@
-# raxo
-# 🔍 Raxo: Transform Natural Language into SQL Queries
+# Raxo
+[![GitHub](https://img.shields.io/badge/GitHub-raxo-blue?logo=github)](https://github.com/raxo-ai/raxo)
 
-Raxo is a Python package designed to streamline the process of converting natural language queries into SQL queries for accessing user data. Whether you're a developer, data analyst, or business user, Raxo empowers you to effortlessly translate human-readable questions into structured SQL commands, enhancing productivity and accessibility to data.
+# 🔍 Raxo: Transform Natural Language into SQL Queries with RAG
+
+Raxo is an MIT-licensed open-source Python framework for text-to-SQL generation using Retrieval-Augmented Generation (RAG). It simplifies the process of generating SQL queries from natural language input, making it easier to interact with databases using plain English.
 
 ## Key Features:
 - 🚀 Seamlessly convert natural language queries into SQL statements
@@ -10,4 +12,4 @@ Raxo is a Python package designed to streamline the process of converting natura
 - 💻 Simple integration into existing Python projects and data pipelines
 - 📚 Comprehensive documentation and examples for easy adoption and implementation
 
-Get started with Raxo today and unlock the power of transforming text into actionable SQL queries for your data needs
+Get started with Raxo today and unlock the power of transforming text into actionable SQL queries for your data needs.

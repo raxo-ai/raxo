@@ -59,7 +59,7 @@ class Llm(ABC):
         """
 
     @abstractmethod
-    def invoke_prompt(self, prompt, temperature, max_tokens, **kwargs):
+    def invoke_prompt(self, prompt, temperature=0.5, max_tokens=700, **kwargs):
         """
         Abstract method to invoke a prompt and generate a response.
 
@@ -92,3 +92,6 @@ class Llm(ABC):
         """
         missing_keys = [param for param in required_keys if getattr(self, param) is None]
         return missing_keys
+
+    def create_embedding(self, data):
+        pass

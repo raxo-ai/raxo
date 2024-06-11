@@ -163,5 +163,6 @@ cython_debug/
 #.idea/
 
 
-# Ignoring main file
+# Ignoring developement files
 main.py
+db/
