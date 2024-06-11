@@ -27,7 +27,6 @@ OpenAIChat Usage Example:
     print(response)
 """
 
-
 import os
 from openai import OpenAI
 from typing import List
