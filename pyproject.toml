@@ -1,12 +1,14 @@
 [build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project]
 name = "raxo"
 version = "0.0.1"
-authors = [{name = "Bipul Kumar Singh", email = "admin@raxoweb.com"}]
-
+authors = [
+    {name = "Bipul Kumar Singh", email = "bipulsinghkashyap@gmail.com"},
+    {name = "Prashant Tomar", email = "admin@raxoweb.com"}
+]
 description = "Generate SQL queries from natural language"
 readme = "README.md"
 requires-python = ">=3.9"
