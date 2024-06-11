@@ -26,12 +26,13 @@ Usage Example:
     chroma_store.disconnect()
 """
 
-
 import chromadb
+import uuid
 from chromadb.utils import embedding_functions
+from .vector import Vector
 
 
-class ChromaStore:
+class ChromaStore(Vector):
     """
     A class to create and manage a ChromaDB client and its collections.
 
@@ -50,7 +51,7 @@ class ChromaStore:
     """
 
     def __init__(self, path: str | None = "./db", persistent: bool | None = True, em_function=None,
-                 metadata=None, n_result_sql=10, n_result_ddl=10, n_result_doc=10):
+                 metadata=None, n_result_sql=5, n_result_ddl=5, n_result_doc=5):
         """
         Initialize an instance of the ChromaStore class.
 
@@ -63,19 +64,23 @@ class ChromaStore:
             n_result_ddl (int): The number of DDL results to retrieve from the vector database. Default is 10.
             n_result_doc (int): The number of documentation results to retrieve from the vector database. Default is 10.
         """
+        Vector.__init__(self)
 
         self.em_function = em_function
         self.n_result_sql = n_result_sql
         self.n_result_ddl = n_result_ddl
         self.n_result_doc = n_result_doc
+
         print("check persistent", persistent)
         if persistent:
             print("creating persistent client")
             self.chroma_client = chromadb.PersistentClient(path=path)
         else:
             self.chroma_client = chromadb.Client()
-
-        if not self.em_function:
+        if self.em_function.embed_mode == "openai":
+            self.em_function = embedding_functions.OpenAIEmbeddingFunction(api_key=self.em_function.api_key,
+                                                                           model_name=self.em_function.model)
+        else:
             self.em_function = embedding_functions.DefaultEmbeddingFunction()
 
         # creating collection for sql queries used for few shot
@@ -95,4 +100,37 @@ class ChromaStore:
             name="documentation",
             embedding_function=self.em_function,
             metadata=metadata
+        )
+
+    def add_ddl(self, ddl: str, embedding: list) -> str:
+        ddl_id = f"{str(uuid.uuid4())}-ddl"
+        self.ddl_collection.add(
+            documents=ddl,
+            embeddings=embedding,
+            ids=ddl_id
+        )
+        return ddl_id
+
+    def add_documentation(self, doc: str, embedding: list) -> str:
+        doc_id = f"{str(uuid.uuid4())}-doc"
+        self.doc_collection.add(
+            documents=doc,
+            embeddings=embedding,
+            ids=doc_id
+        )
+        return doc_id
+
+    def get_ddl(self, question_embed: str):
+        print("question asked: ", question_embed)
+
+        # Get the count of embeddings in the collection
+        embedding_count = self.ddl_collection.count()
+
+        # Adjust n_results if it exceeds the available embeddings
+        if self.n_result_ddl > embedding_count:
+            self.n_result_ddl = embedding_count
+
+        return self.ddl_collection.query(
+            query_embeddings=[question_embed],
+            n_results=self.n_result_ddl
         )

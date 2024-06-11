@@ -129,3 +129,6 @@ class AzureOpenAIChat(Llm):
                                                    **kwargs)
 
         return data.choices[0].message.content
+
+    def create_embedding(self, data):
+        pass

@@ -64,6 +64,7 @@ class MySQLConnector:
         self.user = user
         self.password = password
         self.connection = None
+        self.dialect = "MySQL"
         missing_keys = self.check_missing_keys()
         if missing_keys:
             raise InvalidKeysException(f"Missing keys: {', '.join(missing_keys)}")

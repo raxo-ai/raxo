@@ -30,6 +30,7 @@ OpenAIChat Usage Example:
 
 import os
 from openai import OpenAI
+from typing import List
 from .llms import Llm
 from ..utils.exceptions import InvalidKeysException, PromptError
 
@@ -43,7 +44,6 @@ class OpenAIChat(Llm):
     It manages the connection to the OpenAI service using the provided API key and model.
 
     Attributes:
-        api_key (str): The API key for accessing the OpenAI service.
         model (str): The model to use for generating responses.
         client (OpenAI): The OpenAI client for making API requests.
     """
@@ -70,8 +70,9 @@ class OpenAIChat(Llm):
 
         Llm.__init__(self)
 
-        self.api_key = api_key or os.environ.get("OPENAI_API_KEY", None)
         self.model = model
+        self.api_key = api_key
+
         missing_keys = self.check_missing_keys(self.required_keys)
         if missing_keys:
             raise InvalidKeysException(f"""Missing keys: {', '.join(missing_keys)}\n
@@ -79,8 +80,7 @@ class OpenAIChat(Llm):
                                        `OPENAI_API_KEY` and `MODEL` which contains it, or pass `api_key` and  `model`
                                        as a named parameter""")
 
-        self.client = OpenAI(
-            api_key=self.api_key)
+        self.client = OpenAI(api_key=self.api_key or os.environ.get("OPENAI_API_KEY", None))
 
     def invoke_prompt(self, prompt, temperature: float = 0.5, max_tokens: int = 700, **kwargs):
         """
@@ -112,5 +112,15 @@ class OpenAIChat(Llm):
                                                    temperature=temperature,
                                                    max_tokens=max_tokens,
                                                    **kwargs)
+        
+        print("Data got from chat gpt: ", data)
 
         return data.choices[0].message.content
+
+    def create_embedding(self, data: str) -> List[float]:
+        embedding = self.client.embeddings.create(
+            model="text-embedding-ada-002",
+            input=data,
+            encoding_format="float"
+        )
+        return embedding.data[0].embedding
