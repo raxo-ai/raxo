@@ -111,8 +111,6 @@ class OpenAIChat(Llm):
                                                    temperature=temperature,
                                                    max_tokens=max_tokens,
                                                    **kwargs)
-        
-        print("Data got from chat gpt: ", data)
 
         return data.choices[0].message.content
 
