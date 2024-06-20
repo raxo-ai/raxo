@@ -17,7 +17,7 @@ Get started with Raxo today and unlock the power of transforming text into actio
 ### Installation
 ```sh
 # PyPI
-!pip install raxo
+pip install raxo
 ```
 
 ### Getting started
