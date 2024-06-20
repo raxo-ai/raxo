@@ -1,8 +1,8 @@
 import json
 
 from ..utils.exceptions import NoTextProvided
-from src.raxo.utils.prompts import NLQ_SYSTEM_PROMPT, RELATED_QUESTION_SYSTEM_PROMPT
-from src.raxo.utils.sql_utils import extract_output
+from ..utils.prompts import NLQ_SYSTEM_PROMPT, RELATED_QUESTION_SYSTEM_PROMPT
+from ..utils.sql_utils import extract_output
 from ..models.llms import Llm
 from ..vector.chroma_db import ChromaStore
 
