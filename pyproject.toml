@@ -23,7 +23,6 @@ dependencies = [
 
 [tool.flit.metadata]
 module = "raxo"
-description-file = "DESCRIPTION.md"
 
 [project.urls]
 "Homepage" = "https://github.com/raxo-ai/raxo"
