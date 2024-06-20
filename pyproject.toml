@@ -21,9 +21,6 @@ dependencies = [
     "chromadb >= 0.5.0"
 ]
 
-[tool.flit.metadata]
-module = "raxo"
-
 [project.urls]
 "Homepage" = "https://github.com/raxo-ai/raxo"
 "Bug Tracker" = "https://github.com/raxo-ai/raxo/issues"
